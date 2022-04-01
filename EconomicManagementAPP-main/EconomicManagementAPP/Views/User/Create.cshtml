@@ -1,0 +1,39 @@
+﻿@*
+    vista de creacion de usuario nuevo
+*@
+@model User
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h1>Register User</h1>
+
+<div asp-validation-summary="ModelOnly" class="text danger"></div>
+
+<form asp-action="Create">
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input type="email" asp-for="Email" placeholder="Enter Personal Mail" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="StandarEmail" class="form-label"></label>
+        <input type="email" asp-for="StandarEmail" placeholder="Enter Personal Standar Mail" class="form-control" />
+        <span asp-validation-for="StandarEmail" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Pass" class="form-label"></label>
+        <input type="password" asp-for="Pass" placeholder="Enter Personal Password" class="form-control" />
+        <span asp-validation-for="Pass" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-secundary" asp-action="Index">Cancel</a>
+    </div>
+
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
