@@ -37,13 +37,11 @@ namespace EconomicManagementAPP.Services
         }
 
       
-        public async Task<IEnumerable<AccountTypes>> getAccounts(int UserId)
+        public async Task<IEnumerable<AccountTypes>> getAccounts()
         {
             using var connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<AccountTypes>(@"SELECT Id, Name, OrderAccount
-                                                            FROM AccountTypes
-                                                            WHERE UserId = @UserId
-                                                            ORDER BY OrderAccount", new {UserId}); 
+            return await connection.QueryAsync<AccountTypes>(@"SELECT *
+                                                            FROM AccountTypes"); 
         }
      
         public async Task Update(AccountTypes accountTypes)

@@ -11,6 +11,10 @@ builder.Services.AddTransient<IRepositorieOperationTypes, RepositorieOperationTy
 builder.Services.AddTransient<IRepositorieAccounts, RepositorieAccounts>();
 builder.Services.AddTransient<IRepositorieCategories, RepositorieCategories>();
 builder.Services.AddTransient<IRepositorieTransactions, RepositorieTransactions>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout=TimeSpan.FromMinutes(10);
+});
 
 var app = builder.Build();
 
@@ -26,6 +30,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

@@ -13,8 +13,13 @@ namespace EconomicManagementAPP.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var operationTypes = await repositorieOperationTypes.getOperationTypes();
-            return View(operationTypes);
+            string login = HttpContext.Session.GetString("user");
+            if (login != null)
+            {
+                var operationTypes = await repositorieOperationTypes.getOperationTypes();
+                return View(operationTypes);
+            }
+            return RedirectToAction("Login", "User");
         }
         public IActionResult Create()
         {

@@ -1,13 +1,13 @@
 ﻿using EconomicManagementAPP.Models;
 using Microsoft.AspNetCore.Mvc;
 using EconomicManagementAPP.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace EconomicManagementAPP.Controllers
 {
     public class UserController : Controller 
     {
-        private readonly IRepositorieUser repositorieUser; 
-
+        private readonly IRepositorieUser repositorieUser;
         public UserController(IRepositorieUser repositorieUser)  
         {
             this.repositorieUser = repositorieUser;
@@ -111,8 +111,18 @@ namespace EconomicManagementAPP.Controllers
             await repositorieUser.Delete(Id);
 
             return RedirectToAction("Index");
+
+            
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)
@@ -129,8 +139,28 @@ namespace EconomicManagementAPP.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "AccountTypes");
+                HttpContext.Session.SetInt32("user", result.Id);
+                return RedirectToAction("Index", "Accounts");
             }
+
+        }
+
+        [HttpGet]
+        public IActionResult LogOut(User user)
+        {
+            string login = HttpContext.Session.GetString("user");
+            if (login != null)
+            {
+                return View(user);
+            }
+            return RedirectToAction("Login", "Users");
+        }
+
+        [HttpPost]
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

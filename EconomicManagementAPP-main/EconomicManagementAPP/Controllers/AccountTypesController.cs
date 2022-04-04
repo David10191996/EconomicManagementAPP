@@ -14,9 +14,15 @@ namespace EconomicManagementAPP.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var userId = 1;
-            var accountTypes = await repositorieAccountTypes.getAccounts(userId);
-            return View(accountTypes);
+            string login = HttpContext.Session.GetString("user");
+            if (login != null)
+            {
+
+                var accountTypes = await repositorieAccountTypes.getAccounts();
+                return View(accountTypes);
+            }
+            
+            return RedirectToAction("Login","User");
         }
         public IActionResult Create()
         {
@@ -31,7 +37,7 @@ namespace EconomicManagementAPP.Controllers
                 return View(accountTypes);
             }
 
-            accountTypes.UserId = 1;
+            accountTypes.UserId = (int)HttpContext.Session.GetInt32("user");
             accountTypes.OrderAccount = 1;
 
             var accountTypeExist =

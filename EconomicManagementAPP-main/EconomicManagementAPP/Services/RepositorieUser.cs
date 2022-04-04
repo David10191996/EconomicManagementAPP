@@ -17,7 +17,7 @@ namespace EconomicManagementAPP.Services
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task Create(User users)
+        public async Task<int> Create(User users)
         {
             using var connection = new SqlConnection(connectionString);
 
@@ -25,9 +25,18 @@ namespace EconomicManagementAPP.Services
                                                 (Email, StandarEmail, Password) 
                                                 VALUES (@Email, @StandarEmail, @Pass); SELECT SCOPE_IDENTITY();", users);
             users.Id = id;
+
+            return id;
         }
 
-        public async Task<IEnumerable<User>> getUser()//Listar Usuarios
+        public async Task<User> getUserById(int Id)
+        {
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<User>(@"SELECT *
+                                                                    FROM Users 
+                                                                    WHERE Id = @Id", new { Id });
+        }
+        public async Task<IEnumerable<User>> getUser()
         {
             using var connection = new SqlConnection(connectionString);
             return await connection.QueryAsync<User>(@"SELECT Id, Email, StandarEmail FROM Users");
@@ -52,13 +61,6 @@ namespace EconomicManagementAPP.Services
                                             WHERE Id = @Id", user);
         }
 
-        public async Task<User> getUserById(int Id)
-        {
-            using var connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<User>(@"SELECT Id,Email,StandarEmail,Password
-                                                                    FROM Users 
-                                                                    WHERE Id = @Id", new { Id });
-        }
 
         public async Task Delete(int Id)
         {
@@ -73,6 +75,8 @@ namespace EconomicManagementAPP.Services
                                                                     WHERE Email = @Email 
                                                                     AND Password=@Password",
                                                                     new { Email, Password });
+
+            
         }
     }
 }

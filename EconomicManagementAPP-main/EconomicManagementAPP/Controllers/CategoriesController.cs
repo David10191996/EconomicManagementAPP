@@ -15,8 +15,13 @@ namespace EconomicManagementAPP.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await repositorieCategories.getCategories();
-            return View(categories);
+            string login = HttpContext.Session.GetString("user");
+            if (login != null)
+            {
+                var categories = await repositorieCategories.getCategories();
+                return View(categories);
+            }
+            return RedirectToAction("Login", "User");
         }
         public IActionResult Create()
         {

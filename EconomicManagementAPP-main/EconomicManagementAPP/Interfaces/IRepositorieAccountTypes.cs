@@ -5,7 +5,7 @@ namespace EconomicManagementAPP.Interfaces
     {
         Task Create(AccountTypes accountTypes);
         Task<bool> Exist(string Name, int UserId);
-        Task<IEnumerable<AccountTypes>> getAccounts(int UserId);
+        Task<IEnumerable<AccountTypes>> getAccounts();
         Task Update(AccountTypes accountTypes);
         Task<AccountTypes> getAccountById(int id, int userId); 
         Task Delete(int id);
